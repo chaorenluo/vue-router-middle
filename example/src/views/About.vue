@@ -10,7 +10,7 @@ export default {
       const bool=true;
       if (bool) {
         console.log("没有权限无法进入", routing, next);
-        routing.router.replace("/")
+        // routing.router.replace("/")
       } else {
         next();
       }

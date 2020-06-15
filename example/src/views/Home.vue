@@ -15,7 +15,7 @@ export default {
     console.log("中间件一");
     next()
   },(routing,next)=>{
-    console.log("中间件二",routing,next);
+    console.log("中间件二");
     next()
   }]
 }

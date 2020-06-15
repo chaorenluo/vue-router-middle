@@ -1,8 +1,13 @@
-import { getComponent } from './match-middleware';
+import { getComponent,addGlobalMiddle} from './match-middleware';
 
-export const routerMiddle=(router)=>{
+ const routerMiddle=(router)=>{
   let middle=(to, from, next) => {
     getComponent(to, from, next,router);
   }
   router.beforeEach(middle);
+}
+
+export{
+  getComponent,
+  addGlobalMiddle
 }

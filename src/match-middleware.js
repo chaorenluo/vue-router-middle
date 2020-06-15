@@ -11,8 +11,10 @@ const isPromise = (cmp) => {
   return cmp instanceof Promise
 };
 
+const globalMiddle = [];
+
 // 匹配路由组件及加载懒组件
-const matchPath = async(array_cmp, to) => {
+const matchPath = async (array_cmp, to) => {
   const path = to.path;
   let data = matchAddress(array_cmp, path);
 
@@ -42,6 +44,7 @@ const matchAddress = (array_cmp, path) => {
 };
 
 const mergeMiddleware = (arrMiddleware, routing, next) => {
+
   arrMiddleware = arrMiddleware.map(item => {
     return (routing) => (new_next) => () => {
       if (!new_next) {
@@ -51,9 +54,11 @@ const mergeMiddleware = (arrMiddleware, routing, next) => {
     };
   });
   arrMiddleware = arrMiddleware.map(item => {
+    
     return item(routing);
   });
-  return arrMiddleware.length > 1 ? arrMiddleware = arrMiddleware.reduce((a, b) => a(b())) : arrMiddleware[0](next);
+  console.log(arrMiddleware.reduce((a, b) => (...args) => a(b(...args))))
+  return arrMiddleware.length > 1 ? arrMiddleware.reduce((a, b) => (...args) => a(b(...args)))() : arrMiddleware[0](next);
 };
 
 const Currie = (arr, route, next) => {
@@ -62,7 +67,7 @@ const Currie = (arr, route, next) => {
   return new_next;
 };
 
-export const getComponent = async(to, from, next, router) => {
+export const getComponent = async (to, from, next, router) => {
   const array_cmp = router.getMatchedComponents(to);
   const component = array_cmp.length > 1 ? await matchPath(array_cmp, to) : array_cmp[0];
   const routing = {
@@ -73,10 +78,11 @@ export const getComponent = async(to, from, next, router) => {
 
   if (isFun(component)) {
     const new_component = component();
-    const promiseComp = isPromise(new_component) ? new_component : new_component.component ;
+    const promiseComp = isPromise(new_component) ? new_component : new_component.component;
     promiseComp.then(res => {
-      const middleware = res.default.middleware;
+      let middleware = res.default.middleware;
       if (isMiddleware(middleware)) {
+        middleware = globalMiddle.concat(middleware);
         const new_next = Currie(middleware, routing, next);
         new_next();
       } else {
@@ -84,12 +90,25 @@ export const getComponent = async(to, from, next, router) => {
       }
     });
   } else {
-    const middleware = component.middleware;
+
+    let middleware = component.middleware;
     if (isMiddleware(middleware)) {
+      middleware = globalMiddle.concat(middleware);
       const new_next = Currie(middleware, routing, next);
-      new_next();
+      new_next()
+
     } else {
       next();
     }
   }
 };
+
+export const addGlobalMiddle = (data) => {
+  if (isFun(data)) {
+
+    globalMiddle.push(data);
+  } else {
+    throw new Error('参数必须是function')
+  }
+}
+

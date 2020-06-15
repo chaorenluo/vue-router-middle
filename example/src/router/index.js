@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import {routerMiddle} from 'vue-router-middle'
+import {routerMiddle,addGlobalMiddle} from 'vue-router-middle'
 
 Vue.use(VueRouter)
 
@@ -28,5 +28,9 @@ const router = new VueRouter({
 })
 
 routerMiddle(router);
+addGlobalMiddle((routing, next)=>{
+  console.log("我是全局中间件",routing);
+  next()
+})
 
 export default router

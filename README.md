@@ -1,11 +1,16 @@
 ### vue-router的中间件
 #### npm install vue-router-middle --save安装
 #### 使用方法
-import {routerMiddle} from 'vue-router-middle'　　
+import {routerMiddle，addGlobalMiddle} from 'vue-router-middle'　　
 
 router为new Router()的对象，routerMiddle(router)
 
-然后在页面上写
+addGlobalMiddle（）方法可以添加全局中间件
+
+addGlobalMiddle((routing, next)=>{
+  console.log("我是全局中间件",routing);
+  next()
+})
 
 export default {  
   name: 'Home1',  
