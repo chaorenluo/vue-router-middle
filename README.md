@@ -1,24 +1,25 @@
 ### vue-router的中间件
 #### npm install vue-router-middle --save安装
 #### 使用方法
-import {routerMiddle} from 'vue-router-middle'
-router为new Router()的对象
-routerMiddle(router)
+import {routerMiddle} from 'vue-router-middle'　　
+
+router为new Router()的对象，routerMiddle(router)
+
 然后在页面上写
 
+export default {  
+  name: 'Home1',  
+  middleware:[(routing, next)=>{  
+　  console.log("中间件一")  
+    next()  
+  },(routing, next)=>{  
+　　console.log("中间件二")  
+　　next()  
+　}],  
+}  
+
+
 middleware 为一个数组，你可以添加任意多个中间件但是要执行下一个中间件必须要next()
-
-export default {
-  name: 'Home1',
-  middleware:[(routing, next)=>{
-    console.log("中间件一")
-    next()
-  },(routing, next)=>{
-     console.log("中间件二")
-    next()
-  }],
-}
-
 
 #### 参数说明
 routing对象里面包含 to from router 
