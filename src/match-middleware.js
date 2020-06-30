@@ -57,7 +57,6 @@ const mergeMiddleware = (arrMiddleware, routing, next) => {
     
     return item(routing);
   });
-  console.log(arrMiddleware.reduce((a, b) => (...args) => a(b(...args))))
   return arrMiddleware.length > 1 ? arrMiddleware.reduce((a, b) => (...args) => a(b(...args)))() : arrMiddleware[0](next);
 };
 
@@ -70,6 +69,9 @@ const Currie = (arr, route, next) => {
 export const getComponent = async (to, from, next, router) => {
   const array_cmp = router.getMatchedComponents(to);
   const component = array_cmp.length > 1 ? await matchPath(array_cmp, to) : array_cmp[0];
+  if(!component){
+    throw new Error('跳转的页面不存在')
+  };
   const routing = {
     to,
     from,

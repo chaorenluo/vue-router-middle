@@ -17,6 +17,9 @@ export default {
   },(routing,next)=>{
     console.log("中间件二");
     next()
+  },(routing,next)=>{
+    console.log("中间件三");
+    next()
   }]
 }
 </script>

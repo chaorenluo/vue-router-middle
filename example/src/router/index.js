@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import Home1 from '../views/home1.vue'
 import {routerMiddle,addGlobalMiddle} from 'vue-router-middle'
 
 Vue.use(VueRouter)
@@ -10,6 +11,11 @@ Vue.use(VueRouter)
     path: '/',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/s1',
+    name: 'Home1',
+    component: Home1
   },
   {
     path: '/about',

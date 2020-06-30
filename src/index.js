@@ -8,6 +8,6 @@ import { getComponent,addGlobalMiddle} from './match-middleware';
 }
 
 export{
-  getComponent,
+  routerMiddle,
   addGlobalMiddle
 }
